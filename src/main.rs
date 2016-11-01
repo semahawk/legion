@@ -21,7 +21,9 @@ fn main() {
   };
 
   let mut draw = Drawer::new(renderer);
+  draw.put(1);
   draw.put(2);
+  draw.put(3);
 
   let mut events = ctx.event_pump().unwrap();
 

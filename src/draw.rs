@@ -13,6 +13,8 @@ use sdl2::rect::{Rect};
 pub struct Drawer<'a> {
   font_texture: Texture,
   renderer: Renderer<'a>,
+  curr_x: i32,
+  curr_y: i32,
 }
 
 impl<'a> Drawer<'a> {
@@ -30,15 +32,25 @@ impl<'a> Drawer<'a> {
     Drawer {
       font_texture: font_texture,
       renderer: renderer,
+      curr_x: 0, curr_y: 0,
     }
   }
 
-  pub fn put(&mut self, ch: u8) {
+  pub fn put_at(&mut self, ch: u8, x: i32, y: i32) {
     let source_rect = Rect::new((ch as i32) % 16 * 8, (ch as i32) / 16 * 8, 8, 8);
-    let dest_rect = Rect::new(0, 0, 16, 16);
+    let dest_rect = Rect::new(x * 8, y * 8, 8, 8);
 
     let _ = self.renderer.copy(&self.font_texture, Some(source_rect), Some(dest_rect));
     self.renderer.present();
+  }
+
+  pub fn put(&mut self, ch: u8) {
+    let x = self.curr_x;
+    let y = self.curr_y;
+
+    self.put_at(ch, x, y);
+
+    self.curr_x = self.curr_x + 1;
   }
 
   pub fn refresh(&self) {
