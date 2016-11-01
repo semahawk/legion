@@ -1,0 +1,7 @@
+[package]
+name = "cogadh"
+version = "0.1.0"
+authors = ["Szymon Urbaś <szymon.urbas@aol.com>"]
+
+[dependencies]
+sdl2 = "0.24.0"
