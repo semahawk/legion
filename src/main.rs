@@ -1,10 +1,6 @@
 extern crate sdl2;
 
-use std::path::Path;
-
 use sdl2::event::{Event, WindowEventId};
-use sdl2::surface::{Surface};
-use sdl2::rect::{Rect};
 use sdl2::keyboard::Keycode;
 
 mod draw;
@@ -19,7 +15,7 @@ fn main() {
     Err(err) => panic!("failed to create window: {}", err)
   };
 
-  let mut renderer = match window.renderer().build() {
+  let renderer = match window.renderer().build() {
     Ok(renderer) => renderer,
     Err(err) => panic!("failed to create renderer: {}", err)
   };

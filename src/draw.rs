@@ -37,7 +37,7 @@ impl<'a> Drawer<'a> {
     let source_rect = Rect::new((ch as i32) % 16 * 8, (ch as i32) / 16 * 8, 8, 8);
     let dest_rect = Rect::new(0, 0, 16, 16);
 
-    self.renderer.copy(&self.font_texture, Some(source_rect), Some(dest_rect));
+    let _ = self.renderer.copy(&self.font_texture, Some(source_rect), Some(dest_rect));
     self.renderer.present();
   }
 
