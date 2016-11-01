@@ -7,6 +7,9 @@ use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
 use sdl2::keyboard::Keycode;
 
+mod draw;
+use draw::*;
+
 fn main() {
   let ctx = sdl2::init().unwrap();
   let video_ctx = ctx.video().unwrap();
@@ -21,25 +24,8 @@ fn main() {
     Err(err) => panic!("failed to create renderer: {}", err)
   };
 
-  let surface = match Surface::load_bmp(&Path::new("font.bmp")) {
-    Ok(surface) => surface,
-    Err(err) => panic!("failed to load surface: {}", err)
-  };
-
-  let texture = match renderer.create_texture_from_surface(&surface) {
-    Ok(texture) => texture,
-    Err(err) => panic!("failed to convert surface: {:?}", err)
-  };
-
-  let _ = renderer.clear();
-
-  // display the texture
-  // omitting the src & dst Rect arguments will cause our image to stretch across the entire buffer
-  // try passing Some(surface.rect()) for src & dst instead of None to see how things change
-  let source_rect = Rect::new(16, 0, 8, 8);
-  let dest_rect = Rect::new(0, 0, 16, 16);
-  let _ = renderer.copy(&texture, Some(source_rect), Some(dest_rect));
-  let _ = renderer.present();
+  let mut draw = Drawer::new(renderer);
+  draw.put(2);
 
   let mut events = ctx.event_pump().unwrap();
 
@@ -49,7 +35,7 @@ fn main() {
         Event::Quit{..} => break 'event,
         Event::Window{win_event_id, ..} => {
           match win_event_id {
-            WindowEventId::Exposed => renderer.present(),
+            WindowEventId::Exposed => draw.refresh(),
             _ => (),
           }
         },
