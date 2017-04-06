@@ -9,6 +9,7 @@ use std::path::Path;
 use sdl2::render::{Renderer, Texture};
 use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
+use sdl2::pixels::{Color};
 
 pub struct Drawer<'a> {
   font_texture: Texture,
@@ -19,10 +20,12 @@ pub struct Drawer<'a> {
 
 impl<'a> Drawer<'a> {
   pub fn new(renderer: Renderer<'a>) -> Drawer<'a> {
-    let font_surface = match Surface::load_bmp(&Path::new("font.bmp")) {
+    let mut font_surface = match Surface::load_bmp(&Path::new("font.bmp")) {
       Ok(surface) => surface,
       Err(err) => panic!("failed to load surface: {}", err)
     };
+
+    font_surface.set_color_key(true, Color::RGB(0xff, 0x00, 0xff)).expect("Couldn't set color key");
 
     let font_texture = match renderer.create_texture_from_surface(&font_surface) {
       Ok(texture) => texture,
