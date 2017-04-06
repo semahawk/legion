@@ -53,8 +53,8 @@ impl<'a> Drawer<'a> {
     self.curr_x = self.curr_x + 1;
   }
 
-  pub fn refresh(&self) {
-    println!("requesting refresh!")
+  pub fn refresh(&mut self) {
+    self.renderer.present();
   }
 }
 
