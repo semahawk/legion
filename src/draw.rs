@@ -11,6 +11,8 @@ use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
 use sdl2::pixels::{Color};
 
+use position::*;
+
 pub struct Drawer<'a> {
   font_texture: Texture,
   renderer: Renderer<'a>,
@@ -39,9 +41,9 @@ impl<'a> Drawer<'a> {
     }
   }
 
-  pub fn put_at(&mut self, ch: u8, x: i32, y: i32) {
+  pub fn put_at(&mut self, ch: u8, pos: &Position) {
     let source_rect = Rect::new((ch as i32) % 16 * 8, (ch as i32) / 16 * 8, 8, 8);
-    let dest_rect = Rect::new(x * 8, y * 8, 8, 8);
+    let dest_rect = Rect::new(pos.x() * 8, pos.y() * 8, 8, 8);
 
     let _ = self.renderer.copy(&self.font_texture, Some(source_rect), Some(dest_rect));
     self.renderer.present();
@@ -51,7 +53,7 @@ impl<'a> Drawer<'a> {
     let x = self.curr_x;
     let y = self.curr_y;
 
-    self.put_at(ch, x, y);
+    self.put_at(ch, &Position::new(x, y));
 
     self.curr_x = self.curr_x + 1;
   }

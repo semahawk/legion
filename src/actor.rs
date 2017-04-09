@@ -7,40 +7,39 @@
 //
 
 use draw::*;
+use position::*;
 
 pub struct Actor {
-  x: i32,
-  y: i32,
+  pos: Position,
   face: u8,
 }
 
 impl Actor {
   pub fn new(face: u8) -> Actor {
     Actor {
-      x: 0,
-      y: 0,
+      pos: Position::new(0, 0),
       face: face,
     }
   }
 
   pub fn move_up(&mut self) {
-    self.y -= 1
+    self.pos.move_up();
   }
 
   pub fn move_down(&mut self) {
-    self.y += 1
+    self.pos.move_down();
   }
 
   pub fn move_left(&mut self) {
-    self.x -= 1
+    self.pos.move_left();
   }
 
   pub fn move_right(&mut self) {
-    self.x += 1
+    self.pos.move_right();
   }
 
   pub fn draw(&self, draw: &mut Drawer) {
-    draw.put_at(self.face, self.x, self.y);
+    draw.put_at(self.face, &self.pos);
   }
 }
 

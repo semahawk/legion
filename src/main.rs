@@ -5,6 +5,7 @@ use sdl2::keyboard::Keycode;
 
 mod draw;
 mod actor;
+mod position;
 
 use actor::*;
 use draw::*;
