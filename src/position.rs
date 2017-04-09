@@ -47,8 +47,8 @@ impl Position {
 
   pub fn find_path_to(&self, pos: &Position) -> Position {
     Position {
-      x: self.x + (rand::random::<i32>() % 3 - 1),
-      y: self.y + (rand::random::<i32>() % 3 - 1),
+      x: self.x + (((rand::random::<u32>() as i32) % 2)),
+      y: self.y + (((rand::random::<u32>() as i32) % 2)),
     }
   }
 }
