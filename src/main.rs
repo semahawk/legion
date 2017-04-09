@@ -1,5 +1,4 @@
 extern crate sdl2;
-extern crate rand;
 
 use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
@@ -13,8 +12,8 @@ mod position;
 use actor::*;
 use draw::*;
 
-const GAME_SPEED: u64    = 20;
-const FPS_CAP: u64       = 30;
+const GAME_SPEED: u64    = 30;
+const FPS_CAP: u64       = 60;
 const MAX_FRAMESKIP: u64 = 10;
 
 fn main() {
@@ -33,11 +32,11 @@ fn main() {
 
   let mut draw = Drawer::new(renderer);
 
-  let mut actors = vec!(Actor::new(1u8), Actor::new(2u8));;
+  let mut actors = vec!(Actor::new(1u8, 16, 16), Actor::new(2u8, 20, 32));
 
   let mut events = ctx.event_pump().unwrap();
 
-  let mut frame_start_tick = Duration::new(0, 0);
+  let frame_start_tick = Duration::new(0, 0);
   let mut next_game_tick = Instant::now();
   let mut loops = 0;
 
@@ -71,11 +70,11 @@ fn main() {
     }
 
     while Instant::now() > next_game_tick && loops < MAX_FRAMESKIP {
-
-      let new_pos = actors[1].pos.find_path_to(&actors[0].pos);
+      let new_pos = actors[1].pos.find_path_to(&actors[0].pos).unwrap();
       actors[1].pos = new_pos;
 
       next_game_tick += Duration::from_millis((1000f64 / GAME_SPEED as f64) as u64);
+      loops += 1;
     }
 
     draw.refresh();

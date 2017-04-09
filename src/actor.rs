@@ -15,9 +15,9 @@ pub struct Actor {
 }
 
 impl Actor {
-  pub fn new(face: u8) -> Actor {
+  pub fn new(face: u8, x: i32, y: i32) -> Actor {
     Actor {
-      pos: Position::new(16, 16),
+      pos: Position::new(x, y),
       face: face,
     }
   }
