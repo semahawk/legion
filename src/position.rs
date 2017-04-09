@@ -6,6 +6,8 @@
 // Created on: 09 Apr 2017 11:24:11 +0200 (CEST)
 //
 
+use rand;
+
 pub struct Position {
   x: i32,
   y: i32,
@@ -41,6 +43,13 @@ impl Position {
 
   pub fn move_right(&mut self) {
     self.x += 1;
+  }
+
+  pub fn find_path_to(&self, pos: &Position) -> Position {
+    Position {
+      x: self.x + (rand::random::<i32>() % 3 - 1),
+      y: self.y + (rand::random::<i32>() % 3 - 1),
+    }
   }
 }
 

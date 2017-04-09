@@ -1,4 +1,5 @@
 extern crate sdl2;
+extern crate rand;
 
 use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
@@ -56,6 +57,9 @@ fn main() {
         }
         _ => (),
       }
+
+      let new_pos = actors[1].pos.find_path_to(&actors[0].pos);
+      actors[1].pos = new_pos;
 
       draw.refresh();
 

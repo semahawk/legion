@@ -10,14 +10,14 @@ use draw::*;
 use position::*;
 
 pub struct Actor {
-  pos: Position,
+  pub pos: Position,
   face: u8,
 }
 
 impl Actor {
   pub fn new(face: u8) -> Actor {
     Actor {
-      pos: Position::new(0, 0),
+      pos: Position::new(16, 16),
       face: face,
     }
   }
