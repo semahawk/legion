@@ -4,6 +4,9 @@ use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
 
 mod draw;
+mod actor;
+
+use actor::*;
 use draw::*;
 
 fn main() {
@@ -21,9 +24,8 @@ fn main() {
   };
 
   let mut draw = Drawer::new(renderer);
-  draw.put(1);
-  draw.put(2);
-  draw.put(3);
+
+  let mut actor_a = Actor::new(1u8);
 
   let mut events = ctx.event_pump().unwrap();
 
@@ -41,10 +43,21 @@ fn main() {
           println!("registered a keydown event: {:?}", keycode);
           if keycode == Keycode::Escape {
             break 'event
+          } else if keycode == Keycode::H {
+            actor_a.move_left();
+          } else if keycode == Keycode::J {
+            actor_a.move_down();
+          } else if keycode == Keycode::K {
+            actor_a.move_up();
+          } else if keycode == Keycode::L {
+            actor_a.move_right();
           }
         }
-        _ => continue
+        _ => (),
       }
+
+      draw.refresh();
+      actor_a.draw(&mut draw);
     }
   }
 }

@@ -57,6 +57,7 @@ impl<'a> Drawer<'a> {
   }
 
   pub fn refresh(&mut self) {
+    self.renderer.clear();
     self.renderer.present();
   }
 }
