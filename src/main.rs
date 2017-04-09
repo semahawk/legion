@@ -25,7 +25,7 @@ fn main() {
 
   let mut draw = Drawer::new(renderer);
 
-  let mut actor_a = Actor::new(1u8);
+  let mut actors = vec!(Actor::new(1u8), Actor::new(2u8));;
 
   let mut events = ctx.event_pump().unwrap();
 
@@ -44,20 +44,23 @@ fn main() {
           if keycode == Keycode::Escape {
             break 'event
           } else if keycode == Keycode::H {
-            actor_a.move_left();
+            actors[0].move_left();
           } else if keycode == Keycode::J {
-            actor_a.move_down();
+            actors[0].move_down();
           } else if keycode == Keycode::K {
-            actor_a.move_up();
+            actors[0].move_up();
           } else if keycode == Keycode::L {
-            actor_a.move_right();
+            actors[0].move_right();
           }
         }
         _ => (),
       }
 
       draw.refresh();
-      actor_a.draw(&mut draw);
+
+      for actor in actors.iter() {
+        actor.draw(&mut draw);
+      }
     }
   }
 }
