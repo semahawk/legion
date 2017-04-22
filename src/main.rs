@@ -1,4 +1,5 @@
 extern crate sdl2;
+extern crate pathfinding;
 
 use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
@@ -70,7 +71,7 @@ fn main() {
     }
 
     while Instant::now() > next_game_tick && loops < MAX_FRAMESKIP {
-      let new_pos = actors[1].pos.find_path_to(&actors[0].pos).unwrap();
+      let new_pos = actors[1].pos.find_next_step_to(&actors[0].pos).unwrap_or(actors[1].pos);
       actors[1].pos = new_pos;
 
       next_game_tick += Duration::from_millis((1000f64 / GAME_SPEED as f64) as u64);
