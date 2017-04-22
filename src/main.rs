@@ -1,5 +1,6 @@
 extern crate sdl2;
 extern crate pathfinding;
+extern crate goap;
 
 use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
@@ -34,6 +35,26 @@ fn main() {
   let mut draw = Drawer::new(renderer);
 
   let mut actors = vec!(Actor::new(1u8, 16, 16), Actor::new(2u8, 20, 32));
+
+  actors[0].action_planner.add_action(
+    Action::Approach,
+    vec!((Condition::NearEnemy, false)),
+    vec!((Condition::NearEnemy, true)),
+    10
+  );
+
+  actors[0].action_planner.set_state((Condition::NearEnemy, false));
+  actors[0].action_planner.set_goal((Condition::NearEnemy, true));
+
+  actors[1].action_planner.add_action(
+    Action::Approach,
+    vec!(),
+    vec!((Condition::NearEnemy, true)),
+    10
+  );
+
+  actors[1].action_planner.set_state((Condition::NearEnemy, false));
+  actors[1].action_planner.set_goal((Condition::NearEnemy, true));
 
   let mut events = ctx.event_pump().unwrap();
 
@@ -71,8 +92,13 @@ fn main() {
     }
 
     while Instant::now() > next_game_tick && loops < MAX_FRAMESKIP {
-      let new_pos = actors[1].pos.find_next_step_to(&actors[0].pos).unwrap_or(actors[1].pos);
-      actors[1].pos = new_pos;
+      match actors[1].plan_next_action() {
+        Some(Action::Approach) => {
+          let new_pos = actors[1].pos.find_next_step_to(&actors[0].pos).unwrap_or(actors[1].pos);
+          actors[1].pos = new_pos;
+        },
+        None => (),
+      }
 
       next_game_tick += Duration::from_millis((1000f64 / GAME_SPEED as f64) as u64);
       loops += 1;

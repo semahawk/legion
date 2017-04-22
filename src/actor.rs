@@ -8,10 +8,22 @@
 
 use draw::*;
 use position::*;
+use goap::*;
+
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+pub enum Action {
+  Approach,
+}
+
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd)]
+pub enum Condition {
+  NearEnemy,
+}
 
 pub struct Actor {
   pub pos: Position,
   face: u8,
+  pub action_planner: ActionPlanner<Action, Condition>,
 }
 
 impl Actor {
@@ -19,6 +31,7 @@ impl Actor {
     Actor {
       pos: Position::new(x, y),
       face: face,
+      action_planner: ActionPlanner::new(),
     }
   }
 
@@ -40,6 +53,16 @@ impl Actor {
 
   pub fn draw(&self, draw: &mut Drawer) {
     draw.put_at(self.face, &self.pos);
+  }
+
+  pub fn plan_next_action(&mut self) -> Option<Action> {
+    let plan = self.action_planner.plan();
+
+    if plan.len() > 0 {
+      Some(self.action_planner.plan()[0])
+    } else {
+      None
+    }
   }
 }
 

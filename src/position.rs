@@ -8,8 +8,9 @@
 
 use std::cmp::Ordering;
 use std::collections::{BinaryHeap, HashMap};
-
 use pathfinding;
+
+use actor::*;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Position {

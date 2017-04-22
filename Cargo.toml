@@ -6,3 +6,6 @@ authors = ["Szymon Urbaś <szymon.urbas@aol.com>"]
 [dependencies]
 sdl2 = "0.24.0"
 pathfinding = "0.1.10"
+
+[dependencies.goap]
+path = "/home/poliel/Code/rust/goap"

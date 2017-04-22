@@ -2,6 +2,7 @@
 name = "cogadh"
 version = "0.1.0"
 dependencies = [
+ "goap 0.1.0",
  "pathfinding 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "sdl2 0.24.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -10,6 +11,10 @@ dependencies = [
 name = "bitflags"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "goap"
+version = "0.1.0"
 
 [[package]]
 name = "lazy_static"
