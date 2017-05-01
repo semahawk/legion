@@ -37,23 +37,39 @@ fn main() {
   let mut actors = vec!(Actor::new(1u8, 16, 16), Actor::new(2u8, 20, 32));
 
   actors[0].action_planner.add_action(
-    Action::Approach,
-    vec!((Condition::NearEnemy, false)),
-    vec!((Condition::NearEnemy, true)),
+    Action::Scout,
+    vec!((Condition::TargetLocked, false)),
+    vec!((Condition::TargetLocked, true)),
     10
+  );
+
+  actors[0].action_planner.add_action(
+    Action::Approach,
+    vec!((Condition::TargetLocked, true), (Condition::NearEnemy, false)),
+    vec!((Condition::NearEnemy, true)),
+    0
   );
 
   actors[0].action_planner.set_state((Condition::NearEnemy, false));
+  actors[0].action_planner.set_state((Condition::TargetLocked, true));
   actors[0].action_planner.set_goal((Condition::NearEnemy, true));
 
   actors[1].action_planner.add_action(
-    Action::Approach,
-    vec!(),
-    vec!((Condition::NearEnemy, true)),
+    Action::Scout,
+    vec!((Condition::TargetLocked, false)),
+    vec!((Condition::TargetLocked, true)),
     10
   );
 
+  actors[1].action_planner.add_action(
+    Action::Approach,
+    vec!((Condition::TargetLocked, true), (Condition::NearEnemy, false)),
+    vec!((Condition::NearEnemy, true)),
+    0
+  );
+
   actors[1].action_planner.set_state((Condition::NearEnemy, false));
+  actors[1].action_planner.set_state((Condition::TargetLocked, true));
   actors[1].action_planner.set_goal((Condition::NearEnemy, true));
 
   let mut events = ctx.event_pump().unwrap();
@@ -92,12 +108,10 @@ fn main() {
     }
 
     while Instant::now() > next_game_tick && loops < MAX_FRAMESKIP {
-      match actors[1].plan_next_action() {
-        Some(Action::Approach) => {
-          let new_pos = actors[1].pos.find_next_step_to(&actors[0].pos).unwrap_or(actors[1].pos);
-          actors[1].pos = new_pos;
-        },
-        None => (),
+      let mut actors_iter = actors.iter_mut();
+
+      while let Some(actor) = actors_iter.next() {
+        actor.update(&mut actors_iter);
       }
 
       next_game_tick += Duration::from_millis((1000f64 / GAME_SPEED as f64) as u64);
